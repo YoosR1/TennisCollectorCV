@@ -19,4 +19,4 @@ try:
         print(BallDetect(image, 1))
 except KeyboardInterrupt:
     cam.stop()
-# image = mpimg.imread('images/tennis-ball-on-court.jpg')
+# image = mpimg.imread('testimages/tennis-ball-on-court.jpg')
