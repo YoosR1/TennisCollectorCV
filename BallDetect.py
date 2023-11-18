@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
@@ -7,6 +6,8 @@ import matplotlib.image as mpimg
 # prioritizes closer balls (lower in image)
 # Returns directions of 5 closest balls as list
 # (left, right, or center - empty list if none)
+
+# TODO: adjust color range to outdoor lighting
 def BallDetect(image, convert):
     imageWidth = image.shape[1]
 
@@ -19,7 +20,7 @@ def BallDetect(image, convert):
     balls = cv2.HoughCircles(greens, cv2.HOUGH_GRADIENT, 1, int(imageWidth*.05),
         param1=50, param2=10, minRadius=int(imageWidth*.01), maxRadius=int(imageWidth*.1))
 
-    # TEST CODE
+    # TEST CODE FOR CHECKING DETECTION
     # print(balls)
     # print(len(balls[0]))
     # fig, ax = plt.subplots(3,1)
@@ -47,7 +48,7 @@ def BallDetect(image, convert):
 
         # Classify direction based on x position
         directions = []
-        for ball in ballsSort:
+        for ball in ballsSort[:10]:
             if ball[0] <= imageWidth/3:
                 directions.append('left')
             elif ball[0] < imageWidth - imageWidth/3:
