@@ -72,3 +72,5 @@ def BallDetect(image, convert):
 #    if cv2.waitKey(1) & 0xFF == ord('q'): 
 #        break
 
+image = mpimg.imread('testimages/outside.jpg')
+print(BallDetect(image, False))

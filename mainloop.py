@@ -8,7 +8,7 @@ from LineDetect import *
 
 cam = Picamera2()
 # TODO: test if lower resolution helps with capture/processing time
-config = cam.create_still_configuration()
+config = cam.create_still_configuration(main={'size': (1152, 648)})
 cam.configure(config)
 try:
     while True:
