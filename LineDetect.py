@@ -20,6 +20,10 @@ def distEst(image, focalLength):
 
 def findFocalLength(refImage, lineWidth, lineDist):
     lines = findLines(refImage)
+    if len(lines) < 2:
+        print('Something went wrong, not enough lines')
+        return -1
+    # TODO: figure out how to group lines by nearly equal theta
 
     # cropImage = 
 
