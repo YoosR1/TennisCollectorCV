@@ -8,31 +8,33 @@ import matplotlib.pyplot as plt
 # estimated distance away from camera 
 # Returns estimated distance
 def distEst(image, focalLength):
-    # # Control distance from camera to object (in)
-    # knownDist = 48
-
-    # # Known width of object in control image (in)
-    # knownWidth = 3
-
-    # focalLength = (pxlWidth * knownDist) / knownWidth
+    distance = -1
 
     return distance
 
 def findFocalLength(refImage, lineWidth, lineDist):
+    # Ideally, refImage should only have one court line, so 2 Hough lines
     lines = findLines(refImage)
-    if len(lines) < 2:
-        print('Something went wrong, not enough lines')
+    if lines is None or len(lines) < 2:
         return -1
     # TODO: figure out how to group lines by nearly equal theta
+    # print(lines.shape)
+    
+    # lines.sort()# works for now, might need reworking
+    # print(lines)
 
-    # cropImage = 
+    # parallels = []
+    # for line in lines:
+    #     if line[0][1]
+
+    pxlWidth = distBtwnLines()
 
     # focalLength = (pxlWidth * lineDist) / lineWidth
     # return focalLength
 
 def findLines(image):
     grayImage = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-    blurImage = cv2.GaussianBlur(grayImage, (7, 7), 0)
+    blurImage = cv2.GaussianBlur(grayImage, (5, 5), 0)
     edgeImage = cv2.Canny(blurImage, 250, 400)
     # TODO: test rho value (2nd value) with camera images
     lines = cv2.HoughLines(edgeImage, .7, np.pi/180, 150, np.array([]), 0, 0)
@@ -63,7 +65,7 @@ def findLines(image):
     # if lines is not None:
     #     for i in range(0, len(lines)):
     #         l = lines[i][0]
-    #         cv2.line(refImage, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
+    #         cv2.line(image, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
     
     fig, ax = plt.subplots(2,1)
     ax[0].imshow(image)
@@ -71,9 +73,23 @@ def findLines(image):
     print(lines)
     plt.show()
 
+    # linelist = []
+    # for pair in lines:
+    #     linelist.append([pair[0][1], pair[0][0]])
+    # print(linelist)
     return lines
+
+def distBtwnLines(theta, r1, r2):
+    # y = (-cos(theta)/sin(theta))x + (r/sin(theta))
+    # d = |b2 - b1|/sqrt(1 + m^2)
+    m = -np.cos(theta)/np.sin(theta)
+    b1 = r1/np.sin(theta)
+    b2 = r2/np.sin(theta)
+    d = abs(b2-b1)/np.sqrt(1+pow(m, 2))
+    return d
 
 # TEST CODE
 # image = mpimg.imread('/home/yoosr/opencvtest/images/disttest.jpg')
 image = mpimg.imread('testimages/tennis-ball-on-court.jpg')
+# image = mpimg.imread('testimages/outside.jpg')
 findFocalLength(image, 0, 0)
