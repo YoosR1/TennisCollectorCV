@@ -23,11 +23,26 @@ def findFocalLength(refImage, lineWidth, lineDist):
     # lines.sort()# works for now, might need reworking
     # print(lines)
 
-    # parallels = []
-    # for line in lines:
-    #     if line[0][1]
+    parallels = []
+    for line in lines:
+        # print('new line')
+        for otherLine in lines:
+            if (line == otherLine).all():
+                # print('continue')
+                continue
+            if abs(line[0][1] - otherLine[0][1]) < .2:
+                # print(abs(line[0][1] - otherLine[0][1]))
+                parallels.append([line[0].tolist(), otherLine[0].tolist()])
+    
+    # print(np.array(parallels).shape)
+    # print(parallels)
 
-    pxlWidth = distBtwnLines()
+    # TODO: Need to account for more than 1 court line
+    # if len(parallels) != 2:
+    #     return -2
+
+
+    # pxlWidth = distBtwnLines()
 
     # focalLength = (pxlWidth * lineDist) / lineWidth
     # return focalLength
@@ -92,4 +107,4 @@ def distBtwnLines(theta, r1, r2):
 # image = mpimg.imread('/home/yoosr/opencvtest/images/disttest.jpg')
 image = mpimg.imread('testimages/tennis-ball-on-court.jpg')
 # image = mpimg.imread('testimages/outside.jpg')
-findFocalLength(image, 0, 0)
+print(findFocalLength(image, 0, 0))
