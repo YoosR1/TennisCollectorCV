@@ -13,7 +13,7 @@ def distEst(image, focalLength):
     return distance
 
 def findFocalLength(refImage, lineWidth, lineDist):
-    # Ideally, refImage should only have one court line, so 2 Hough lines
+    # Ideally, refImage should have very few Hough lines
     lines = findLines(refImage)
     if lines is None or len(lines) < 2:
         return -1
@@ -23,29 +23,28 @@ def findFocalLength(refImage, lineWidth, lineDist):
     # lines.sort()# works for now, might need reworking
     # print(lines)
 
-    parallels = []
+    longestDist = 0
     for line in lines:
         # print('new line')
         for otherLine in lines:
             if (line == otherLine).all():
                 # print('continue')
                 continue
+            # Compare thetas, parallel if close
             if abs(line[0][1] - otherLine[0][1]) < .2:
+                currDist = distBtwnLines(line[0][1], line[0][0], otherLine[0][0])
+                if currDist > longestDist:
+                    longestDist = currDist
                 # print(abs(line[0][1] - otherLine[0][1]))
-                parallels.append([line[0].tolist(), otherLine[0].tolist()])
+                # parallels.append([line[0].tolist(), otherLine[0].tolist()])
     
     # print(np.array(parallels).shape)
     # print(parallels)
 
-    # TODO: Need to account for more than 1 court line
-    # if len(parallels) != 2:
-    #     return -2
+    pxlWidth = longestDist
 
-
-    # pxlWidth = distBtwnLines()
-
-    # focalLength = (pxlWidth * lineDist) / lineWidth
-    # return focalLength
+    focalLength = (pxlWidth * lineDist) / lineWidth
+    return focalLength
 
 def findLines(image):
     grayImage = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
