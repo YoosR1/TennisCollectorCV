@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Use hough transform on canny image to find court lines and
 # estimated distance away from camera 
-# Returns estimated distance
+# Returns estimated distance in inches
 def distEst(image, focalLength):
     distance = -1
 
