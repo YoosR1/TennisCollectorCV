@@ -17,24 +17,26 @@ def findFocalLength(refImage, lineWidth, lineDist):
     lines = findLines(refImage)
     if lines is None or len(lines) < 2:
         return -1
-    # TODO: figure out how to group lines by nearly equal theta
-    # print(lines.shape)
-    
-    # lines.sort()# works for now, might need reworking
-    # print(lines)
 
     longestDist = 0
     for line in lines:
         # print('new line')
+        slope = slopeFromPoints(line[0])
         for otherLine in lines:
             if (line == otherLine).all():
                 # print('continue')
                 continue
-            # Compare thetas, parallel if close
-            if abs(line[0][1] - otherLine[0][1]) < .2:
-                currDist = distBtwnLines(line[0][1], line[0][0], otherLine[0][0])
+            # Compare slopes, parallel if close
+            otherSlope = slopeFromPoints(otherLine[0])
+            if abs(slope - otherSlope) < .2:
+                currDist = distBtwnLinesP(line[0], otherLine[0])
                 if currDist > longestDist:
                     longestDist = currDist
+            # # Compare thetas, parallel if close
+            # if abs(line[0][1] - otherLine[0][1]) < .2:
+            #     currDist = distBtwnLines(line[0][1], line[0][0], otherLine[0][0])
+            #     if currDist > longestDist:
+            #         longestDist = currDist
                 # print(abs(line[0][1] - otherLine[0][1]))
                 # parallels.append([line[0].tolist(), otherLine[0].tolist()])
     
@@ -51,35 +53,35 @@ def findLines(image):
     blurImage = cv2.GaussianBlur(grayImage, (5, 5), 0)
     edgeImage = cv2.Canny(blurImage, 250, 400)
     # TODO: test rho value (2nd value) with camera images
-    lines = cv2.HoughLines(edgeImage, .7, np.pi/180, 150, np.array([]), 0, 0)
+    # lines = cv2.HoughLines(edgeImage, .7, np.pi/180, 150, np.array([]), 0, 0)
 
-    # lines = cv2.HoughLinesP(
-    #     edgeImage,
-    #     lines=np.array([]),
-    #     rho=6,
-    #     theta=np.pi / 120,
-    #     threshold=160,
-    #     minLineLength=100,
-    #     maxLineGap=25
-    # )
+    lines = cv2.HoughLinesP(
+        edgeImage,
+        lines=np.array([]),
+        rho=6,
+        theta=np.pi / 180,
+        threshold=100,
+        minLineLength=100,
+        maxLineGap=25
+    )
 
     # TEST CODE
-    if lines is not None:
-        for i in range(0, len(lines)):
-            rho = lines[i][0][0]
-            theta = lines[i][0][1]
-            a = math.cos(theta)
-            b = math.sin(theta)
-            x0 = a * rho
-            y0 = b * rho
-            pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
-            pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
-            cv2.line(image, pt1, pt2, (255,0,0), 3, cv2.LINE_AA)
-
     # if lines is not None:
     #     for i in range(0, len(lines)):
-    #         l = lines[i][0]
-    #         cv2.line(image, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
+    #         rho = lines[i][0][0]
+    #         theta = lines[i][0][1]
+    #         a = math.cos(theta)
+    #         b = math.sin(theta)
+    #         x0 = a * rho
+    #         y0 = b * rho
+    #         pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
+    #         pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
+    #         cv2.line(image, pt1, pt2, (255,0,0), 3, cv2.LINE_AA)
+
+    if lines is not None:
+        for i in range(0, len(lines)):
+            l = lines[i][0]
+            cv2.line(image, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
     
     fig, ax = plt.subplots(2,1)
     ax[0].imshow(image)
@@ -101,6 +103,20 @@ def distBtwnLines(theta, r1, r2):
     b2 = r2/np.sin(theta)
     d = abs(b2-b1)/np.sqrt(1+pow(m, 2))
     return d
+
+def distBtwnLinesP(line1, line2):
+    # d = |b2 - b1|/sqrt(1 + m^2)
+    # b = x1y2 - x2y1
+    # slope is same on both
+    m = slopeFromPoints(line1)
+    b1 = (line1[0]*line1[3])-(line1[2]*line1[1])
+    b2 = (line2[0]*line2[3])-(line2[2]*line2[1])
+    d = abs(b2 - b1)/np.sqrt(1+pow(m, 2))
+    return d
+
+def slopeFromPoints(endpoints):
+    slope = (endpoints[0] - endpoints[2])/(endpoints[1] - endpoints[3])
+    return slope
 
 # TEST CODE
 # image = mpimg.imread('/home/yoosr/opencvtest/images/disttest.jpg')
