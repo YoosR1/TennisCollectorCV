@@ -17,24 +17,26 @@ def findFocalLength(refImage, lineWidth, lineDist):
     lines = findLines(refImage)
     if lines is None or len(lines) < 2:
         return -1
-    # TODO: figure out how to group lines by nearly equal theta
-    # print(lines.shape)
-    
-    # lines.sort()# works for now, might need reworking
-    # print(lines)
 
     longestDist = 0
     for line in lines:
         # print('new line')
+        slope = slopeFromPoints(line[0])
         for otherLine in lines:
             if (line == otherLine).all():
                 # print('continue')
                 continue
-            # Compare thetas, parallel if close
-            if abs(line[0][1] - otherLine[0][1]) < .2:
-                currDist = distBtwnLines(line[0][1], line[0][0], otherLine[0][0])
+            # Compare slopes, parallel if close
+            otherSlope = slopeFromPoints(otherLine[0])
+            if abs(slope - otherSlope) < .2:
+                currDist = distBtwnLinesP(line[0], otherLine[0])
                 if currDist > longestDist:
                     longestDist = currDist
+            # # Compare thetas, parallel if close
+            # if abs(line[0][1] - otherLine[0][1]) < .2:
+            #     currDist = distBtwnLines(line[0][1], line[0][0], otherLine[0][0])
+            #     if currDist > longestDist:
+            #         longestDist = currDist
                 # print(abs(line[0][1] - otherLine[0][1]))
                 # parallels.append([line[0].tolist(), otherLine[0].tolist()])
     
