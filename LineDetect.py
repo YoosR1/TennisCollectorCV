@@ -102,8 +102,15 @@ def distBtwnLines(theta, r1, r2):
     d = abs(b2-b1)/np.sqrt(1+pow(m, 2))
     return d
 
-# def distBtwnLinesP(line1. line2):
+def distBtwnLinesP(line1, line2):
     # d = |b2 - b1|/sqrt(1 + m^2)
+    # b = x1y2 - x2y1
+    # slope is same on both
+    m = slopeFromPoints(line1)
+    b1 = (line1[0]*line1[3])-(line1[2]*line1[1])
+    b2 = (line2[0]*line2[3])-(line2[2]*line2[1])
+    d = abs(b2 - b1)/np.sqrt(1+pow(m, 2))
+    return d
 
 def slopeFromPoints(endpoints):
     slope = (endpoints[0] - endpoints[2])/(endpoints[1] - endpoints[3])
