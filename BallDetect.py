@@ -15,7 +15,7 @@ def BallDetect(image, convert):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     blurred = cv2.GaussianBlur(image, (15, 15), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_RGB2HSV)
-    greens = cv2.inRange(hsv, (70, 50, 80), (90, 255, 255))
+    greens = cv2.inRange(hsv, (70, 90, 80), (90, 255, 255))
 
     balls = cv2.HoughCircles(greens, cv2.HOUGH_GRADIENT, 1, int(imageWidth*.05),
         param1=50, param2=10, minRadius=int(imageWidth*.01), maxRadius=int(imageWidth*.1))
@@ -72,5 +72,5 @@ def BallDetect(image, convert):
 #    if cv2.waitKey(1) & 0xFF == ord('q'): 
 #        break
 
-image = mpimg.imread('testimages/outside.jpg')
-print(BallDetect(image, False))
+image = mpimg.imread('testimages/balltest.jpg')
+print(BallDetect(image, True))

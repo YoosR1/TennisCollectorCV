@@ -24,7 +24,7 @@ distance = distEst(currImage, focalLength)
 # if distance < 48:
 #     command = 
 
-ballList = BallDetect(currImage, True)# Double check this needs conversion
+ballList = BallDetect(currImage, True)
 
 # TEST CODE
 # try:
