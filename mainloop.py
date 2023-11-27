@@ -35,12 +35,20 @@ cam = Picamera2()
 config = cam.create_still_configuration(main={'size': (1152, 648)})
 cam.configure(config)
 
+mask = [
+    (0, 366), # just under left arm
+    (576, 324), # center of frame
+    (1152 ,342) # just under right arm
+    (1152, 648) # bottom right
+    (0, 648) # bottom left
+]
+
 while True:
     cam.start()
     currImage = cam.capture_array()
     cam.stop()
 
-    lineDist, lineDir = distEst(currImage, focalLength)
+    lineDist, lineDir = distEst(currImage, focalLength, mask)
     # TODO: make distEst also return direction of line
     if lineDist < 36:
         command = 6 + lineDir

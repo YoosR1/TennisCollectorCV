@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 # Use hough transform on canny image to find court lines and
 # estimated distance away from camera 
 # Returns estimated distance in inches
-def distEst(image, focalLength):
-    distance = -1
+def distEst(image, focalLength, mask):
+    lines = findLines(image, mask)
 
     return distance
 
@@ -48,15 +48,20 @@ def findFocalLength(refImage, lineWidth, lineDist):
     focalLength = (pxlWidth * lineDist) / lineWidth
     return focalLength
 
-def findLines(image):
+def findLines(image, mask=None):
     grayImage = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     blurImage = cv2.GaussianBlur(grayImage, (5, 5), 0)
     edgeImage = cv2.Canny(blurImage, 250, 400)
+    if mask is not None:
+        cropImage = imgCrop(edgeImage, mask)
+    else:
+        cropImage = edgeImage
+
     # TODO: test rho value (2nd value) with camera images
     # lines = cv2.HoughLines(edgeImage, .7, np.pi/180, 150, np.array([]), 0, 0)
 
     lines = cv2.HoughLinesP(
-        edgeImage,
+        cropImage,
         lines=np.array([]),
         rho=6,
         theta=np.pi / 180,
@@ -77,7 +82,6 @@ def findLines(image):
     #         pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
     #         pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
     #         cv2.line(image, pt1, pt2, (255,0,0), 3, cv2.LINE_AA)
-
     if lines is not None:
         for i in range(0, len(lines)):
             l = lines[i][0]
@@ -117,6 +121,13 @@ def distBtwnLinesP(line1, line2):
 def slopeFromPoints(endpoints):
     slope = (endpoints[0] - endpoints[2])/(endpoints[1] - endpoints[3])
     return slope
+
+def imgCrop(image, vertices):
+    cropped = np.zeroes_like(image)
+    colorChannels = img.shape[2]
+    matchMaskColor = (255,) * colorChannels
+    cv2.fillPoly(cropped, vertices, matchMaskColor)
+    return cropped
 
 # TEST CODE
 # image = mpimg.imread('/home/yoosr/opencvtest/images/disttest.jpg')
