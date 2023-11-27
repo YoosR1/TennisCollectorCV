@@ -49,12 +49,15 @@ def BallDetect(image, convert):
         # Classify direction based on x position
         directions = []
         for ball in ballsSort[:10]:
-            if ball[0] <= imageWidth/3:
-                directions.append('left')
-            elif ball[0] < imageWidth - imageWidth/3:
-                directions.append('center')
+            if ball[0] <= imageWidth * .4:
+                # directions.append('left')
+                directions.append(1)
+            elif ball[0] < imageWidth - imageWidth * .4:
+                # directions.append('center')
+                directions.append(2)
             else:
-                directions.append('right')
+                # directions.append('right')
+                directions.append(3)
 
     cv2.imwrite('output.jpg', image)
     print("image saved")
