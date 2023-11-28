@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from picamera2 import Picamera2
-import RPi.GPIO as GPIO # Double check for installation of package on RasPi
+import RPi.GPIO as GPIO
+import serial
 
 from BallDetect import *
 from LineDetect import *
@@ -15,13 +16,12 @@ command = -1
 inputGPIO = 18 # physical pin 12
 outputGPIO = 17 # physical pin 11
 
+ser = serial.Serial("/dev/ttyS0", 9600)
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
-# TODO: figure out how to transmit value
 def commandRequest():
-    # GPIO.output(outputGPIO, GPIO.HIGH)
-    return command
+    ser.write(command)
 
 GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetime=100)
 
