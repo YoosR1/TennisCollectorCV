@@ -87,11 +87,11 @@ def findLines(image, mask=None):
             l = lines[i][0]
             cv2.line(image, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
     
-    fig, ax = plt.subplots(2,1)
-    ax[0].imshow(image)
-    ax[1].imshow(edgeImage)
-    print(lines)
-    plt.show()
+    # fig, ax = plt.subplots(2,1)
+    # ax[0].imshow(image)
+    # ax[1].imshow(edgeImage)
+    # print(lines)
+    # plt.show()
 
     # linelist = []
     # for pair in lines:
@@ -123,7 +123,7 @@ def slopeFromPoints(endpoints):
     return slope
 
 def imgCrop(image, vertices):
-    cropped = np.zeroes_like(image)
+    cropped = np.zeros_like(image)
     colorChannels = img.shape[2]
     matchMaskColor = (255,) * colorChannels
     cv2.fillPoly(cropped, vertices, matchMaskColor)

@@ -20,14 +20,14 @@ ser = serial.Serial("/dev/ttyS0", 9600)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-def commandRequest():
-    ser.write(command)
+def commandRequest(arg):
+    ser.write((str(command)).encode('utf-8'))
 
 GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetime=100)
 
 # refimage should be of 2in court line 4ft away
 # might use image from 2ft away
-refImage = mpimg.imread('testimage/2in2ft.jpg')
+refImage = mpimg.imread('testimages/2in2ft.jpg')
 focalLength = findFocalLength(refImage, 2, 24)
 if focalLength < 1:
     print('something wrong with the input image')
