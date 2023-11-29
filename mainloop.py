@@ -50,16 +50,16 @@ while True:
     currImage = cam.capture_array()
     cam.stop()
 
-    lineDist, lineDir = distEst(currImage, focalLength, mask)
-    # TODO: make distEst also return direction of line
-    if lineDist < 36:
-        command = 6 + lineDir
-    else:
-        ballList = BallDetect(currImage, True)
-        ballDir = [0] * 5
-        for ball in ballList:
-            ballDir[ball] += 1
-        command = max(ballDir)
+    # lineDist, lineDir = distEst(currImage, focalLength, mask)
+    # # TODO: make distEst also return direction of line
+    # if lineDist < 36:
+    #     command = 6 + lineDir
+    # else:
+    ballList = BallDetect(currImage, True)
+    ballDir = [0] * 5
+    for ball in ballList:
+        ballDir[ball] += 1
+    command = max(ballDir)
     # TEST CODE
     print(command)
 
