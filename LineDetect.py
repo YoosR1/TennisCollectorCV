@@ -124,13 +124,13 @@ def slopeFromPoints(endpoints):
 
 def imgCrop(image, vertices):
     cropped = np.zeros_like(image)
-    colorChannels = img.shape[2]
+    colorChannels = image.shape[2]
     matchMaskColor = (255,) * colorChannels
     cv2.fillPoly(cropped, vertices, matchMaskColor)
     return cropped
 
 # TEST CODE
 # image = mpimg.imread('/home/yoosr/opencvtest/images/disttest.jpg')
-image = mpimg.imread('testimages/tennis-ball-on-court.jpg')
+# image = mpimg.imread('testimages/tennis-ball-on-court.jpg')
 # image = mpimg.imread('testimages/outside.jpg')
-print(findFocalLength(image, 0, 0))
+# print(findFocalLength(image, 0, 0))

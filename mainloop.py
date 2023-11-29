@@ -60,6 +60,8 @@ while True:
         for ball in ballList:
             ballDir[ball] += 1
         command = max(ballDir)
+    # TEST CODE
+    print(command)
 
 
 # TEST CODE
