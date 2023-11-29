@@ -27,13 +27,12 @@ GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetim
 
 # refimage should be of 2in court line 4ft away
 # might use image from 2ft away
-refImage = mpimg.imread('testimages/2in2ft.jpg')
-focalLength = findFocalLength(refImage, 2, 24)
-if focalLength < 1:
-    print('something wrong with the input image')
+# refImage = mpimg.imread('testimages/2in2ft.jpg')
+# focalLength = findFocalLength(refImage, 2, 24)
+# if focalLength < 1:
+#     print('something wrong with the input image')
 
 cam = Picamera2()
-# TODO: test if lower resolution helps with capture/processing time
 config = cam.create_still_configuration(main={'size': (1152, 648)})
 cam.configure(config)
 
@@ -59,7 +58,7 @@ while True:
     ballDir = [0] * 5
     for ball in ballList:
         ballDir[ball] += 1
-    command = max(ballDir)
+    command = index(max(ballDir))
     # TEST CODE
     print(command)
 
