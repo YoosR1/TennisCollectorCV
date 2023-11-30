@@ -20,7 +20,7 @@ ser = serial.Serial("/dev/ttyS0", 9600)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(outputGPIOGPIO, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
 def commandRequest(arg):
     ser.write((str(command)).encode('utf-8'))
 
