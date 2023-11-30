@@ -3,7 +3,6 @@ import matplotlib.image as mpimg
 from picamera2 import Picamera2
 import RPi.GPIO as GPIO
 import serial
-import time
 
 from BallDetect import *
 from LineDetect import *
@@ -21,14 +20,9 @@ ser = serial.Serial("/dev/ttyS0", 9600)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(outputGPIOGPIO, GPIO.OUT, initial=GPIO.LOW)
 def commandRequest(arg):
-    for i in range(command):
-        GPIO.output(outputGPIO, GPIO.HIGH)
-        start = time.time()
-        while time.time() - start < (0.05):
-            pass
-        GPIO.output(outputGPIO, GPIO.LOW)
+    ser.write((str(command)).encode('utf-8'))
 
 GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetime=100)
 
@@ -66,11 +60,9 @@ while True:
     for ball in ballList:
         ballDir[ball] += 1
     command = ballDir.index(max(ballDir))
-    if command == 0:
-        command = -1
     # TEST CODE
-    # print(ballDir)
-    # print(command)
+    print(ballDir)
+    print(command)
 
 
 # TEST CODE
