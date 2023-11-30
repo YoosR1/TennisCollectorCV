@@ -23,12 +23,12 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
 def commandRequest(arg):
-    GPIO.output(outputGPIO, GPIO.HIGH)
-    start = time.time()
-    while time.time() - start < (0.05 * command):
-        pass
-    GPIO.output(outputGPIO, GPIO.LOW)
-    
+    for i in range(command):
+        GPIO.output(outputGPIO, GPIO.HIGH)
+        start = time.time()
+        while time.time() - start < (0.05):
+            pass
+        GPIO.output(outputGPIO, GPIO.LOW)
 
 GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetime=100)
 
@@ -66,9 +66,11 @@ while True:
     for ball in ballList:
         ballDir[ball] += 1
     command = ballDir.index(max(ballDir))
+    if command == 0:
+        command = -1
     # TEST CODE
-    print(ballDir)
-    print(command)
+    # print(ballDir)
+    # print(command)
 
 
 # TEST CODE

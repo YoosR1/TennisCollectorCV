@@ -28,14 +28,14 @@ def BallDetect(image, convert):
     # ax[1].imshow(blurred)
     # ax[1].imshow(hsv)
     # ax[1].imshow(greens)
-    cv2.imwrite('greens.jpg', greens)
-    print('greens saved')
-    if balls is not None:
-        for i in balls[0,:]:
-            # edge
-            cv2.circle(image,(int(i[0]),int(i[1])),int(i[2]),(0,255,0),2)
-            # center
-            cv2.circle(image,(int(i[0]),int(i[1])),2,(255,0,0),3)
+    # cv2.imwrite('greens.jpg', greens)
+    # print('greens saved')
+    # if balls is not None:
+    #     for i in balls[0,:]:
+    #         # edge
+    #         cv2.circle(image,(int(i[0]),int(i[1])),int(i[2]),(0,255,0),2)
+    #         # center
+    #         cv2.circle(image,(int(i[0]),int(i[1])),2,(255,0,0),3)
     # ax[2].imshow(image)
     # plt.show()
 
@@ -59,8 +59,8 @@ def BallDetect(image, convert):
                 # directions.append('right')
                 directions.append(3)
 
-    cv2.imwrite('output.jpg', image)
-    print("image saved")
+    # cv2.imwrite('output.jpg', image)
+    # print("image saved")
     return directions
 
 # Test function
