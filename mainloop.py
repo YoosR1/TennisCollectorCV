@@ -58,7 +58,7 @@ while True:
     ballDir = [0] * 5
     for ball in ballList:
         ballDir[ball] += 1
-    command = index(max(ballDir))
+    command = ballDir.index(max(ballDir))
     # TEST CODE
     print(command)
 
