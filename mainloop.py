@@ -24,8 +24,8 @@ GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
 def commandRequest(arg):
 #    ser.write((str(command)).encode('utf-8'))
-#    ser.write(48)
-    ser.write(b'48')
+   ser.write(48)
+    # ser.write(b'48')
 GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetime=100)
 
 # refimage should be of 2in court line 4ft away
@@ -66,7 +66,7 @@ while True:
     print(ballDir)
     print(command)
 
-    sleep(.5)
+    sleep(1)
 
 # TEST CODE
 # try:
