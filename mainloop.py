@@ -15,17 +15,16 @@ from LineDetect import *
 command = -1
 
 inputGPIO = 18 # physical pin 12
-outputGPIO = 17 # physical pin 11
+# outputGPIO = 17 # physical pin 11
 
-ser = serial.Serial("/dev/ttyS0", 9600)
+ser = serial.Serial("/dev/ttyAMA0", 9600)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(inputGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
+# GPIO.setup(outputGPIO, GPIO.OUT, initial=GPIO.LOW)
 def commandRequest(arg):
-#    ser.write((str(command)).encode('utf-8'))
-   ser.write(48)
-    # ser.write(b'48')
+    ser.write((str(command)).encode('utf-8'))
+
 GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetime=100)
 
 # refimage should be of 2in court line 4ft away
