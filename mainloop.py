@@ -61,11 +61,13 @@ while True:
     for ball in ballList:
         ballDir[ball] += 1
     command = ballDir.index(max(ballDir))
+    if command == 0:
+        command = -1
     # TEST CODE
     print(ballDir)
     print(command)
 
-    sleep(1)
+    sleep(3)
 
 # TEST CODE
 # try:
