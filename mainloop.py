@@ -34,7 +34,9 @@ GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetim
 #     print('something wrong with the input image')
 
 cam = Picamera2()
-config = cam.create_still_configuration(main={'size': (1152, 648)})
+# config = cam.create_still_configuration(main={'size': (1152, 648)})
+mode = picam2.sensor_modes[0]
+config = cam.create_preview_configuration(sensor={'output_size': mode['size'], 'bit_depth':mode['bit_depth']})
 cam.configure(config)
 
 mask = [

@@ -75,5 +75,5 @@ def BallDetect(image, convert):
 #    if cv2.waitKey(1) & 0xFF == ord('q'): 
 #        break
 
-image = mpimg.imread('testimages/balltest.jpg')
-print(BallDetect(image, True))
+# image = mpimg.imread('testimages/balltest.jpg')
+# print(BallDetect(image, True))
