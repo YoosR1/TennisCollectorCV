@@ -35,11 +35,9 @@ GPIO.add_event_detect(inputGPIO, GPIO.RISING, callback=commandRequest, bouncetim
 #     print('something wrong with the input image')
 
 cam = Picamera2()
-cam.stop_preview()
-# config = cam.create_still_configuration(main={'size': (1152, 648)})
-mode = cam.sensor_modes[0]
-config = cam.create_preview_configuration(sensor={'output_size': mode['size'], 'bit_depth':mode['bit_depth']})
+config = cam.create_still_configuration(main={'size': (1152, 648)})
 cam.configure(config)
+cam.close()
 
 mask = [
     (0, 366), # just under left arm
@@ -50,9 +48,10 @@ mask = [
 ]
 
 while True:
+    cam = Picamera2()
     cam.start()
     currImage = cam.capture_array()
-    cam.stop()
+    cam.close()
 
     # lineDist, lineDir = distEst(currImage, focalLength, mask)
     # # TODO: make distEst also return direction of line
@@ -70,7 +69,7 @@ while True:
     print(ballDir)
     print(command)
 
-    sleep(3)
+    sleep(1)
 
 # TEST CODE
 # try:
